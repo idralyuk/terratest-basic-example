@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang
+    
+    working_directory: /go/src/github.com/idralyuk/terratest-basic-example
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - pkg-cache
+
+      - run:
+          name: Install dependencies
+          command: go get -t -v ./...
+
+      - run:
+          name: Run tests
+          command: cd test && go test -v
+
+      - save_cache:
+          key: pkg-cache
+          paths:
+            - "/go/pkg"
