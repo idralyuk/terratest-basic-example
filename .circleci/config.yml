@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang
-    
+
     working_directory: /go/src/github.com/idralyuk/terratest-basic-example
 
     steps:
@@ -12,6 +12,14 @@ jobs:
       - restore_cache:
           keys:
             - pkg-cache
+
+      - run:
+          name: Install Terraform
+          environment:
+            TERRAFORM_VERSION: 0.11.7
+          command: |
+            wget --directory-prefix=/tmp https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip;
+            sudo unzip -d /usr/local/bin /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
       - run:
           name: Install dependencies
